@@ -6,6 +6,7 @@ import numpy as np
 from cycler import cycler
 import matplotlib.gridspec as gridspec
 
+
 def lighten_color(color, amount=0.5):
     """
     https://gist.github.com/ihincks
@@ -27,37 +28,131 @@ def lighten_color(color, amount=0.5):
     c = colorsys.rgb_to_hls(*mc.to_rgb(c))
     return colorsys.hls_to_rgb(c[0], 1 - amount * (1 - c[1]), c[2])
 
+
 linestyles = {
-     'loosely dotted':      (0, (1, 10)),
-     'dotted':              (0, (1, 1)),
-     'densely dotted':      (0, (1, 1)),
-     'long dash with offset': (5, (10, 3)),
-     'loosely dashed':      (0, (5, 10)),
-     'dashed':              (0, (5, 5)),
-     'densely dashed':      (0, (5, 1)),
-     'loosely dashdotted':  (0, (3, 10, 1, 10)),
-     'dashdotted':          (0, (3, 5, 1, 5)),
-     'densely dashdotted':  (0, (3, 1, 1, 1)),
-     'dashdotdotted':       (0, (3, 5, 1, 5, 1, 5)),
-     'loosely dashdotdotted': (0, (3, 10, 1, 10, 1, 10)),
-     'densely dashdotdotted': (0, (3, 1, 1, 1, 1, 1)),
-     'solid': 'solid',   # Same as (0, ()) or '-'
-     'dotted': 'dotted',  # Same as (0, (1, 1)) or ':'
-     'dashed': 'dashed',  # Same as '--'
-     'dashdot': 'dashdot',# Same as '-.'
-     '-': 'solid',    # Same as (0, ()) or '-'
-     ':': 'dotted',  # Same as (0, (1, 1)) or ':'
-     '--': 'dashed',  # Same as '--'
-     '-.': 'dashdot'}  # Same as '-.'
+    'loosely dotted': (0, (1, 10)),
+    'dotted': (0, (1, 1)),
+    'densely dotted': (0, (1, 1)),
+    'long dash with offset': (5, (10, 3)),
+    'loosely dashed': (0, (5, 10)),
+    'dashed': (0, (5, 5)),
+    'densely dashed': (0, (5, 1)),
+    'loosely dashdotted': (0, (3, 10, 1, 10)),
+    'dashdotted': (0, (3, 5, 1, 5)),
+    'densely dashdotted': (0, (3, 1, 1, 1)),
+    'dashdotdotted': (0, (3, 5, 1, 5, 1, 5)),
+    'loosely dashdotdotted': (0, (3, 10, 1, 10, 1, 10)),
+    'densely dashdotdotted': (0, (3, 1, 1, 1, 1, 1)),
+    'solid': 'solid',  # Same as (0, ()) or '-'
+    'dotted': 'dotted',  # Same as (0, (1, 1)) or ':'
+    'dashed': 'dashed',  # Same as '--'
+    'dashdot': 'dashdot',  # Same as '-.'
+    '-': 'solid',  # Same as (0, ()) or '-'
+    ':': 'dotted',  # Same as (0, (1, 1)) or ':'
+    '--': 'dashed',  # Same as '--'
+    '-.': 'dashdot'
+}  # Same as '-.'
 
 
-def write_preliminary(*args,
-                      size=14,
-                      x=0.2,
-                      y=0.2,
-                      string="IceCube Preliminary",
-                      c="darkred",
-                      **kwargs):
+def draw_numbers(
+    ax,
+    matrix,
+    xticks,
+    yticks,
+    cmap_name,
+    round=3,
+    fontsize=14,
+    norm="minmax",
+    mask=None
+):
+    """
+    Draw numbers on a pcolormesh plot.
+
+    Parameters
+    ----------
+    ax : matplotlib axis
+        axis to draw on.
+    matrix : np.ndarray
+        2D array of values of the rectangular colorplot.
+    xticks : np.array
+        1d array of x-centers.
+    yticks : np.array
+        1d array of y-centers.
+    cmap_name : str
+        Name of a named matplotlib colormap.mro
+    round : int, optional
+        Number of precision decimals to round to, by default 3
+    norm : str, optional
+        either 'minmax' or 'twoslope': minmax to take min/max values of matrix,
+        twoslope if the norm should be centered at 0.
+    """
+
+    # imports
+    from matplotlib import cm
+    import matplotlib as mpl
+    import matplotlib.colors as colors
+
+    # get the extent of the matrix
+    vmin = np.nanmin(matrix)
+    vmax = np.nanmax(matrix)
+
+    # get cmap, normalization, and a scalar mappable
+    cmap = plt.get_cmap(cmap_name)
+
+    delta = np.max([np.abs(1.0 - np.min(matrix)), np.abs(1.0 - np.max(matrix))])
+    if norm == "twoslope":
+        norm = colors.TwoSlopeNorm(vmin=1 - delta, vcenter=1.0, vmax=1 + delta)
+    elif norm == "minmax":
+        norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)
+    scalar_map = cm.ScalarMappable(norm=norm, cmap=cmap)
+
+    # loop through the matrix
+    for idx_x, xc in enumerate(xticks):
+        for idx_y, yc in enumerate(yticks):
+            # get the number to write as a string
+            if mask is not None:
+                # mask all elements which are masked (1)
+                if mask.T[idx_x, idx_y]:
+                    s = ""
+                else:
+                    s = str(np.round(matrix.T[idx_x, idx_y], round))
+            else:
+                s = str(np.round(matrix.T[idx_x, idx_y], round))
+
+            # get the rgba value of the cmap at the matrix position
+            rgb = scalar_map.to_rgba(matrix.T[idx_x,
+                                              idx_y])[0:3]  # [0:4] gives rgba
+            # print(scalar_map.to_rgba(matrix.T[idx_x, idx_y])[0:4])
+            # rgb to greyscale scalers, sum=1.0
+            scale_r = 0.299
+            scale_g = 0.587
+            scale_b = 0.114
+
+            # greyscale
+            y = scale_r * rgb[0] + scale_g * rgb[1] + scale_b * rgb[2]
+
+            # set the color depending on brightness
+            if y > 186. / 255.:  # literature seems to be 186/255 as switch condition
+                c = "black"
+            else:
+                c = "white"
+
+            # write the text
+
+            ax.text(
+                xc, yc, s, fontsize=fontsize, ha='center', va='top', color=c
+            )
+
+
+def write_preliminary(
+    *args,
+    size=14,
+    x=0.2,
+    y=0.2,
+    string="IceCube Preliminary",
+    c="darkred",
+    **kwargs
+):
     """
     Figure or axes objects to write text to
     """
@@ -66,26 +161,30 @@ def write_preliminary(*args,
     for arg in args:
         # arg is a full figure
         if isinstance(arg, matplotlib.figure.Figure):
-            text = arg.text(x,
-                 y,
-                 s=string,
-                 color=c,
-                 fontweight="bold",
-                 horizontalalignment='left',
-                 verticalalignment='bottom',
-                 size=size,
-                 **kwargs)  # bold somehow is not working?   
-        else:  # normal axes 
-            text = arg.text(x,
-                    y,
-                    s=string,
-                    color=c,
-                    fontweight="bold",
-                    transform=arg.transAxes,
-                    horizontalalignment='left',
-                    verticalalignment='bottom',
-                    size=size,
-                    **kwargs)  # bold somehow is not working?
+            text = arg.text(
+                x,
+                y,
+                s=string,
+                color=c,
+                fontweight="bold",
+                horizontalalignment='left',
+                verticalalignment='bottom',
+                size=size,
+                **kwargs
+            )  # bold somehow is not working?
+        else:  # normal axes
+            text = arg.text(
+                x,
+                y,
+                s=string,
+                color=c,
+                fontweight="bold",
+                transform=arg.transAxes,
+                horizontalalignment='left',
+                verticalalignment='bottom',
+                size=size,
+                **kwargs
+            )  # bold somehow is not working?
             texts.append(text)
     return texts
 
@@ -168,7 +267,10 @@ class FigureHandler():
         with the indicated number of subplots and size.
         """
         fig, axs = plt.subplots(
-            figsize=[self.w, self.h], nrows=self.nrows, ncols=self.ncols, **kwargs
+            figsize=[self.w, self.h],
+            nrows=self.nrows,
+            ncols=self.ncols,
+            **kwargs
         )
         self.fig = fig
 
