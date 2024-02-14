@@ -2,7 +2,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 mpl.use('agg')
-plt.style.use('.latex.mplstyle')
 import numpy as np
 from cycler import cycler
 import matplotlib.gridspec as gridspec
