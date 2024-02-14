@@ -1,0 +1,45 @@
+# philipp fuersts plotting style
+# FONT
+## font.family : serif
+## font.serif  : cmr10
+text.usetex : false
+# at beginning of script: plt.rcParams["text.latex.preamble"] = r"\usepackage{amsmath}"
+text.latex.preamble:\usepackage{amsmath}
+# font.family : STIXGeneral
+font.size   : 11.0
+axes.titlesize : 11.0
+axes.labelsize : 11.0
+xtick.labelsize : 11.0
+ytick.labelsize : 11.0
+
+##mathtext.fontset : cm
+mathtext.fontset : stix
+axes.formatter.limits: -5, 6  # use scientific notation if log10
+                               # of the axis range is smaller than the
+                               # first or larger than the second
+# color cycle
+# Tableau colorblind 10 palette
+axes.prop_cycle: cycler('color', ['006BA4', 'FF800E', '595959', '5F9ED1', 'C85200', '898989', 'A2C8EC', 'FFBC79', 'CFCFCF'])
+# #404040
+patch.facecolor: 006BA4
+
+# LINES
+lines.linewidth   : 1.0     ## line width in points
+
+# GRID
+grid.color     : e0e0e0  
+grid.linewidth : 0.7        
+
+# AXES
+axes.edgecolor      : black   ## e0e0e0   ## axes edge color
+axes.linewidth      : 0.7     ## edge linewidth
+axes.grid           : False   ## display grid or not
+
+# TICKS
+#xtick.major.size     : 3.5    ## major tick size in points
+##xtick.minor.size     : 2      ## minor tick size in points
+xtick.major.width    : 0.7     ## major tick width in points
+xtick.minor.width    : 0.5    ## minor tick width in points
+##xtick.major.pad      : 3.5    ## distance to major tick label in points
+##xtick.minor.pad      : 3.4    ## distance to the minor tick label in points
+xtick.color          : black  ## color of the tick labels
