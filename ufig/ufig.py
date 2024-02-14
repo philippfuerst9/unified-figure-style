@@ -140,7 +140,7 @@ def draw_numbers(
             # write the text
 
             ax.text(
-                xc, yc, s, fontsize=fontsize, ha='center', va='top', color=c
+                xc, yc, s, fontsize=fontsize, ha='center', va='center', color=c
             )
 
 
