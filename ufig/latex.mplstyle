@@ -1,7 +1,8 @@
 # philipp fuersts plotting style
 # FONT
-## font.family : serif
-## font.serif  : cmr10
+font.family : serif
+font.serif  : cmr10
+axes.formatter.use_mathtext : true
 text.usetex : false
 # at beginning of script: plt.rcParams["text.latex.preamble"] = r"\usepackage{amsmath}"
 text.latex.preamble:\usepackage{amsmath}
