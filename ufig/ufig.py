@@ -62,6 +62,7 @@ def draw_numbers(
     cmap_name,
     round=3,
     fontsize=14,
+    fix_color=None,
     norm="minmax",
     mask=None
 ):
@@ -82,6 +83,10 @@ def draw_numbers(
         Name of a named matplotlib colormap.mro
     round : int, optional
         Number of precision decimals to round to, by default 3
+    fontsize : int, optional
+        Fontsize of the numbers, by default 14
+    fix_color : str, optional
+        If set, all numbers will be written in this color, by default None
     norm : str, optional
         either 'minmax' or 'twoslope': minmax to take min/max values of matrix,
         twoslope if the norm should be centered at 0.
@@ -104,6 +109,8 @@ def draw_numbers(
         norm = colors.TwoSlopeNorm(vmin=1 - delta, vcenter=1.0, vmax=1 + delta)
     elif norm == "minmax":
         norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)
+    else:
+        norm = norm
     scalar_map = cm.ScalarMappable(norm=norm, cmap=cmap)
 
     # loop through the matrix
@@ -136,6 +143,9 @@ def draw_numbers(
                 c = "black"
             else:
                 c = "white"
+            
+            if fix_color is not None:
+                c = fix_color
 
             # write the text
 
