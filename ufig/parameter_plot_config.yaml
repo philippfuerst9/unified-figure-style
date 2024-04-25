@@ -1,0 +1,457 @@
+# possible colors: https://xkcd.com/color/rgb/
+Fluxes:
+  total:
+    color: black
+    linestyle: '-'
+    label: Total Bestfit
+  conventional:
+    color: black
+    label: Conventional
+    linestyle: ':'
+  conv_norm:
+    color: black
+    label: Conventional
+    linestyle: ':'
+  muon:
+    color: orange
+    label: Muon Background
+    linestyle: '--'
+  muon_tracks:
+    color: orange
+    label: Muon Background
+    linestyle: '--'
+  muon_cscd:
+    color: orange
+    label: Muon Background
+    linestyle: '--'
+  muon_norm:
+    color: orange
+    label: Muon Background
+    linestyle: '-.'
+  prompt_norm:
+    color: black
+    label: Prompt (S2.3c + H4a)
+    linestyle: '-.'
+  prompt:
+    color: black
+    label: Prompt (S2.3c + H4a)
+    linestyle: '-.'
+  isotropic:
+    color: darkgreen
+    label: Isotropic Astro
+    linestyle: '-'
+  SPL:
+    color: darkgreen
+    label: SPL only
+    linestyle: '-'
+  astro_norm:
+    color: darkgreen
+    label: Isotropic Astro
+    linestyle: '-'
+  fermi:
+    color: xkcd:dull orange
+    label: Fermi-$\pi^0$
+    mathlabel: \mathrm{Fermi-}\pi^0
+    linestyle: '-'
+  galactic_fermi:
+    color: xkcd:dull orange
+    label: Fermi-$\pi^0$
+    mathlabel: \mathrm{Fermi-}\pi^0
+    linestyle: 'densely dashdotdotted'
+  KRA_5:
+    color: xkcd:deep sea blue
+    label: KRA-$\gamma$-5
+    mathlabel: \mathrm{KRA-}\gamma -5
+    linestyle: 'densely dashed'
+  KRA_50:
+    color: xkcd:carolina blue
+    label: KRA-$\gamma$-50
+    mathlabel: \mathrm{KRA-}\gamma -50
+    linestyle:  'densely dashdotted'
+  AFO-h:
+    color: xkcd:dusty red
+    label: AFO-h
+    linestyle: '-'
+  AFO-r:
+    color: xkcd:dusty red
+    label: AFO-r
+    linestyle: '--'
+  FM-const:
+    color: xkcd:purplish grey
+    label: FM-const.
+    mathlabel: \mathrm{FM-const.}
+    linestyle: '-.'
+  FM_const:
+    color: xkcd:purplish grey
+    label: FM-const.
+    mathlabel: \mathrm{FM-const.}
+    linestyle: '-.'
+  FM-SNR:
+    color: darkgrey
+    label: FM-SNR
+    mathlabel: \mathrm{FM-SNR}
+    linestyle: ':'
+  FM_SNR:
+    color: darkgrey
+    label: FM-SNR
+    mathlabel: \mathrm{FM-SNR}
+    linestyle: ':'
+  SMW:
+    color: xkcd:dusty red
+    label: CRINGE
+    mathlabel: \mathrm{CRINGE}
+    linestyle: '-'
+  CRINGE:
+    color: xkcd:dusty red
+    label: CRINGE
+    mathlabel: \mathrm{CRINGE}
+    linestyle: '-'
+  Cringe:
+    color: xkcd:dusty red
+    label: CRINGE
+    mathlabel: \mathrm{CRINGE}
+    linestyle: '-'
+  cringe:
+    color: xkcd:dusty red
+    label: CRINGE
+    mathlabel: \mathrm{CRINGE}
+    linestyle: '-'
+  Unresolved:
+    color: [1.0, 0.5098039215686274, 0.2549019607843137]
+    label: Unresolved
+    mathlabel: \mathrm{Unresolved}
+    linestyle: ':'
+  unresolved:
+    color: [1.0, 0.5098039215686274, 0.2549019607843137]
+    label: Unresolved
+    mathlabel: \mathrm{Unresolved}
+    linestyle: ':'
+  Cygnus:
+    color: xkcd:dark teal
+    label: Cygnus
+    mathlabel: \mathrm{Cygnus}
+    linestyle: '-.'
+  cygnus:
+    color: xkcd:dark teal
+    label: Cygnus
+    mathlabel: \mathrm{Cygnus}
+    linestyle: '-.'
+
+Parameters:
+  CR_grad:
+      color: '#bcbd22'
+      label: CR Model Interp.
+      linestyle: -.
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - -1
+      - 3
+  delta_gamma:
+      color: '#ff7f0e'
+      label: CR $\Delta \gamma$
+      linestyle: -.
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - -0.1
+      - 0.4
+  conv_norm:
+        color: royalblue
+        label: $\Phi_{\mathrm{Conventional}}$
+        linestyle: '-'
+        ylims:
+        - 0
+        - 10
+        xlims:
+        - 1
+        - 2
+  muon_norm:
+      color: cornflowerblue
+      label: Muon Template
+      linestyle: ':'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 3
+  muongun_norm:
+      color: cornflowerblue
+      label: MuonGun
+      linestyle: '-.'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 1.0
+      - 1.3
+  prompt_norm:
+      color: turquoise
+      label: $\Phi_{\mathrm{Prompt}}$
+      linestyle: '-.'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 4
+  gamma_astro:
+      color: darkviolet
+      label: $\gamma_{\mathrm{isotropic}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 2.2
+      - 2.5
+  gamma_1:
+      color: darkviolet
+      label: $\gamma_{\mathrm{1, isotropic}}$
+      linestyle: '-.'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 1
+      - 3
+  gamma_2:
+      color: darkviolet
+      label: $\gamma_{\mathrm{2, isotropic}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 2.3
+      - 3.1
+  e_break:
+      color: midnightblue
+      label: $E_{\mathrm{break}}$
+      linestyle: '-.'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 4
+      - 5
+  astro_norm:
+      color: blue
+      label: $\Phi_{\mathrm{isotropic}}$
+      linestyle: '--'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 1
+      - 3.0
+  cutoff_astro:
+      color: steelblue
+      label: $\log_{10}(E_{\mathrm{cutoff}} / \mathrm{GeV})$
+      linestyle: '-.'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 5
+      - 7
+  astro_parabola_norm:
+      color: '#8ebbfd'
+      label: Log-Parabola Norm
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 1
+      - 3
+  astro_parabola_a:
+      color: '#7a378b'
+      label: Log-Parabola $\alpha$
+      linestyle: '-.'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 1.5
+      - 3
+  astro_parabola_b:
+      color: '#9d1b71'
+      label: Log-Parabola $\beta$
+      linestyle: ':'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 1
+  galactic_norm:
+      color: darkblue
+      label: $\Psi_{\mathrm{galactic}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 5
+  cringe_norm:
+      color: xkcd:dusty red
+      label: $\Psi_{\mathrm{CRINGE}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 5
+  cringe_diffuse_norm:
+      color: xkcd:dusty red
+      label: $\Psi_{\mathrm{CRINGE, diffuse}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 5
+  unresolved_norm:
+      color: [1.0, 0.5098039215686274, 0.2549019607843137]
+      label: $\Psi_{\mathrm{unresolved}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 5
+  cygnus_norm:
+      color: xkcd:dark teal
+      label: $\Psi_{\mathrm{Cygnus}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 10
+  gamma_galactic:
+      color: darkblue
+      label: $\gamma_{\mathrm{galactic}}$
+      linestyle: ':'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 5
+  barr_h:
+      color: firebrick
+      label: Barr $H$
+      linestyle: ':'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - -0.5
+      - 0.5
+  barr_w:
+      color: firebrick
+      label: Barr $W$
+      linestyle: --
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - -1
+      - 1
+  barr_y:
+      color: firebrick
+      label: Barr $Y$
+      linestyle: -.
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - -1
+      - 1
+  barr_z:
+      color: firebrick
+      label: Barr $Z$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - -0.5
+      - 0.5
+  dom_eff:
+      color: forestgreen
+      label: Opt. Efficiency
+      linestyle: ':'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.95
+      - 1.05
+  ice_abs:
+      color: forestgreen
+      label: Ice Absorption
+      linestyle: --
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.95
+      - 1.05
+  ice_holep0:
+      color: forestgreen
+      label: Ice Hole $p_0$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - -0.5
+      - 0.5
+  ice_holep1:
+      color: forestgreen
+      label: Ice Hole $p_1$
+      linestyle: ':'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - -0.15
+      - 0.15
+  ice_scat:
+      color: forestgreen
+      label: Ice Scattering
+      linestyle: -.
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.9
+      - 1.1
+  effective_veto:
+      color: grey
+      label: Effective Veto
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - -1.3
+      - 1.3
+  llh:
+      color: black
+      label: $-\log(\mathcal{L})$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
