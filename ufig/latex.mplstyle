@@ -1,6 +1,6 @@
 # philipp fuersts plotting style
 # FONT
-font.family : serif
+font.family : sans-serif
 font.serif  : cmr10
 axes.formatter.use_mathtext : true
 text.usetex : false
