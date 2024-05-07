@@ -1,10 +1,10 @@
+from cycler import cycler
 import matplotlib as mpl
+import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
+import numpy as np
 
 mpl.use('agg')
-import numpy as np
-from cycler import cycler
-import matplotlib.gridspec as gridspec
 
 
 def lighten_color(color, amount=0.5):
