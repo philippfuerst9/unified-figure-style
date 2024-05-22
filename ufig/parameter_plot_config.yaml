@@ -186,8 +186,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 1.08
-      - 1.18
+      - 1.07
+      - 1.17
   prompt_norm:
       color: turquoise
       label: $\Phi_{\mathrm{Prompt}}$
