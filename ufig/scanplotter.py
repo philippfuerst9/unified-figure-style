@@ -4,7 +4,6 @@ import math
 import yaml
 import numpy as np
 from ufig.figure_helpers import FigureHandler
-# from ufig.resource_reader import UfigResourceReader
 import importlib.resources as resources
 
 
@@ -35,7 +34,7 @@ class ScanPlotter():
 
     @classmethod
     def from_dict(
-        cls, scan_hdl_dict, parameter_plot_config="parameter_plot_config.yaml"
+        cls, scan_hdl_dict, override_parameter_plot_config=None
     ):
         """
         Initialize a Plotter from a dictionary.
@@ -43,7 +42,7 @@ class ScanPlotter():
         Returns:
         - cls: Plotter instance.
         """
-        plotter = cls(parameter_plot_config=parameter_plot_config)
+        plotter = cls(override_parameter_plot_config=override_parameter_plot_config)
         plotter.scan_suite_dict = scan_hdl_dict
         plotter.scan_names = list(scan_hdl_dict.keys())
         return plotter
