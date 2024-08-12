@@ -162,6 +162,9 @@ class ScanPlotter():
         ax,
         plot_inject=False,
         ylabel=r"$-2\Delta \log \mathcal{L}$",
+        remove_peaks=False,
+        n_iter=2,
+        default_ylims=True,
         **kwargs
     ):
         """
@@ -173,31 +176,39 @@ class ScanPlotter():
         - ax (matplotlib.axis): Axis to plot into.
         - plot_inject (bool, optional): Plot injected parameters. Defaults to False.
         - ylabel (str, optional): Label for the y-axis. Defaults to r"$-2\Delta \log \mathcal{L}$".
+        - remove_peaks (bool, optional): Remove peaks from the asimov scans. Defaults to False.
+        - n_iter (int, optional): Number of iterations to remove peaks. Defaults to 2.
+        - default_ylims (bool, optional): Use default y limits. Defaults to True.
         - **kwargs: Additional keyword arguments, passed to pyplot.plot()
         """
         asimov_hdl = self.scan_suite_dict[scan_name].get("asimov_hdl")
 
-        if asimov_hdl is not None:
-            x, y = asimov_hdl.get_scan_xy(param)
+        if asimov_hdl is None:
+            return
 
-            # add all asimov settings but override them with given kwargs:
-            # make a deepcopy of the asimov settings:
-            actual_kwargs = self.scan_suite_dict[scan_name]["asimov_settings"
-                                                           ].copy()
-            actual_kwargs.update(kwargs)
-            ax.plot(x, y, **actual_kwargs)
+        x, y = asimov_hdl.get_scan_xy(param)
+
+        if remove_peaks:
+            x, y = self.remove_peaks(x=x, y=y, n_iter=n_iter)
+        # add all asimov settings but override them with given kwargs:
+        # make a deepcopy of the asimov settings:
+        actual_kwargs = self.scan_suite_dict[scan_name]["asimov_settings"
+                                                        ].copy()
+        actual_kwargs.update(kwargs)
+        ax.plot(x, y, **actual_kwargs)
+        if default_ylims:
             ax.set_ylim(*self.parameter_plot_config[param]["ylims"])
-            ax.set_ylabel(ylabel)
+        ax.set_ylabel(ylabel)
 
-            if plot_inject:
-                injection_points = self.scan_suite_dict[scan_name].get(
-                    "injection_points", None
-                )
-                if injection_points is not None:
-                    value = injection_points[
-                        param
-                    ]  # this has to exist, otherwise config is probably wrong
-                    ax.axvline(value, color="black", linestyle="-", zorder=10)
+        if plot_inject:
+            injection_points = self.scan_suite_dict[scan_name].get(
+                "injection_points", None
+            )
+            if injection_points is not None:
+                value = injection_points[
+                    param
+                ]  # this has to exist, otherwise config is probably wrong
+                ax.axvline(value, color="black", linestyle="-", zorder=10)
 
     def plot_additional_pars_in_subplot(
         self, scan_name, param, ax, secondary_params=None, **kwargs
@@ -233,6 +244,27 @@ class ScanPlotter():
                     **kwargs
                 )
 
+    def remove_peaks(self, x, y, n_iter=2):
+        """
+        Remove x, y value pairs where the y values is greater than both adjacent points
+
+        Parameters:
+        - x (np.array): x values
+        - y (np.array): y values
+        - n_iter (int): number of iterations to remove peaks
+
+        Returns:
+        - np.array: x values with peaks removed
+        - np.array: y values with peaks removed
+        """
+        for _ in range(n_iter):
+            # find peaks
+            peaks = np.where((y[1:-1] > y[0:-2]) & (y[1:-1] > y[2:]))[0]
+            # remove peaks
+            x = np.delete(x, peaks+1)
+            y = np.delete(y, peaks+1)
+        return x, y
+
     def plot_scan_matrix(
         self,
         name,
@@ -244,6 +276,10 @@ class ScanPlotter():
         plot_inject=False,
         nrows=None,
         ncols=None,
+        remove_peaks=False,
+        n_iter=2,
+        default_xlims=True,
+        default_ylims=True,
         **kwargs
     ):
         """
@@ -258,6 +294,10 @@ class ScanPlotter():
         - plot_inject (bool, optional): Plot injected parameters. Defaults to False.
         - nrows (int, optional): Number of rows. Defaults to None.
         - ncols (int, optional): Number of columns. Defaults to None.
+        - remove_peaks (bool, optional): Remove peaks from the asimov scans. Defaults to False.
+        - n_iter (int, optional): Number of iterations to remove peaks. Defaults to 2.
+        - default_xlims (bool, optional): Use default x limits. Defaults to True.
+        - default_ylims (bool, optional): Use default y limits. Defaults to True.
         - **kwargs: Additional keyword arguments for the FigureHandler.
 
         Returns:
@@ -352,7 +392,10 @@ class ScanPlotter():
                                 param,
                                 ax,
                                 plot_inject=plot_inject_c,
-                                ylabel=None
+                                ylabel=None,
+                                remove_peaks=remove_peaks,
+                                n_iter=n_iter,
+                                default_ylims=default_ylims,
                             )
                     if do_pseudoexp:
                         # pseudoexp can always be plotted
@@ -377,7 +420,8 @@ class ScanPlotter():
                 if do_add_pars and i % ncols == ncols - 1:
                     ax2.set_ylabel("Parameter Value")
                 # always set default xlimits:
-                ax.set_xlim(*self.parameter_plot_config[param]["xlims"])
+                if default_xlims:
+                    ax.set_xlim(*self.parameter_plot_config[param]["xlims"])
 
                 h, l = ax.get_legend_handles_labels()
                 if ax2 is not None:
