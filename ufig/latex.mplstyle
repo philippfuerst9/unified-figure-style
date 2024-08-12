@@ -19,8 +19,18 @@ axes.formatter.limits: -5, 6  # use scientific notation if log10
                                # of the axis range is smaller than the
                                # first or larger than the second
 # color cycle
+# Default palette
+#axes.prop_cycle: cycler('color', ['023eff', 'ff7c00','1ac938', 'e8000b','8b2be2', '9f4800','f14cc1', 'a3a3a3','ffc400', '00d7ff'])
+# Default with different green
+axes.prop_cycle: cycler('color', ['023eff', 'ff7c00','029e73', 'e8000b','8b2be2', '9f4800','f14cc1', 'a3a3a3','ffc400', '00d7ff'])
+# Default with redder orange, darker grey, darker yellow
+axes.prop_cycle: cycler('color', ['023eff', 'FF6400','029e73', 'e8000b','8b2be2', '9f4800','f14cc1', '969696','D2B414', '00d7ff'])
 # Tableau colorblind 10 palette
-axes.prop_cycle: cycler('color', ['006BA4', 'FF800E', '595959', '5F9ED1', 'C85200', '898989', 'A2C8EC', 'FFBC79', 'CFCFCF'])
+# axes.prop_cycle: cycler('color', ['006BA4',  'FF800E',  '595959',  '5F9ED1',  'C85200',  '898989',  'A2C8EC',  'FFBC79',  'CFCFCF'])
+# Seaborn Dark
+# axes.prop_cycle: cycler('color', ['#001c7f', '#b1400d', '#12711c', '#8c0800', '#591e71', '#592f0d', '#a23582', '#3c3c3c', '#b8850a', '#006374'])
+# Seaborn Dark, custom colorblind green 
+# axes.prop_cycle: cycler('color', ['001c7f', 'b1400d', '016B4D', '8c0800', '591e71', '592f0d', 'a23582', '3c3c3c', 'b8850a', '006374'])
 # #404040
 patch.facecolor: 006BA4
 
