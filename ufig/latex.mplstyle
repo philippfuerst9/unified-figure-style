@@ -22,7 +22,7 @@ axes.formatter.limits: -5, 6  # use scientific notation if log10
 # Default palette
 #axes.prop_cycle: cycler('color', ['023eff', 'ff7c00','1ac938', 'e8000b','8b2be2', '9f4800','f14cc1', 'a3a3a3','ffc400', '00d7ff'])
 # Default with different green
-axes.prop_cycle: cycler('color', ['023eff', 'ff7c00','029e73', 'e8000b','8b2be2', '9f4800','f14cc1', 'a3a3a3','ffc400', '00d7ff'])
+# axes.prop_cycle: cycler('color', ['023eff', 'ff7c00','029e73', 'e8000b','8b2be2', '9f4800','f14cc1', 'a3a3a3','ffc400', '00d7ff'])
 # Default with redder orange, darker grey, darker yellow
 axes.prop_cycle: cycler('color', ['023eff', 'FF6400','029e73', 'e8000b','8b2be2', '9f4800','f14cc1', '969696','D2B414', '00d7ff'])
 # Tableau colorblind 10 palette
