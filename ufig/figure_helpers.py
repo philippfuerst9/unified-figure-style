@@ -44,13 +44,13 @@ linestyles = {
     'loosely dashdotdotted': (0, (3, 10, 1, 10, 1, 10)),
     'densely dashdotdotted': (0, (3, 1, 1, 1, 1, 1)),
     'solid': 'solid',  # Same as (0, ()) or '-'
-    'dotted': 'dotted',  # Same as (0, (1, 1)) or ':'
-    'dashed': 'dashed',  # Same as '--'
-    'dashdot': 'dashdot',  # Same as '-.'
-    '-': 'solid',  # Same as (0, ()) or '-'
-    ':': 'dotted',  # Same as (0, (1, 1)) or ':'
-    '--': 'dashed',  # Same as '--'
-    '-.': 'dashdot'
+    # 'dotted': 'dotted',  # Same as (0, (1, 1)) or ':'
+    # 'dashed': 'dashed',  # Same as '--'
+    # 'dashdot': 'dashdot',  # Same as '-.'
+    # '-': 'solid',  # Same as (0, ()) or '-'
+    # ':': 'dotted',  # Same as (0, (1, 1)) or ':'
+    # '--': 'dashed',  # Same as '--'
+    # '-.': 'dashdot'
 }  # Same as '-.'
 
 
@@ -60,8 +60,9 @@ def draw_numbers(
     xticks,
     yticks,
     cmap_name,
-    round=3,
+    round_digits=3,
     n_characters=None,
+    char_type="float",
     fontsize=14,
     fix_color=None,
     norm="minmax",
@@ -88,6 +89,8 @@ def draw_numbers(
         Number of precision decimals to round to, by default 3
     n_characters : int, optional
         Explicitly limit the number of characters to write, by default None
+    char_type : str, optional
+        'int' or 'float', by default 'float'
     fontsize : int, optional
         Fontsize of the numbers, by default 14
     fix_color : str, optional
@@ -125,15 +128,6 @@ def draw_numbers(
     # loop through the matrix
     for idx_x, xc in enumerate(xticks):
         for idx_y, yc in enumerate(yticks):
-            # get the number to write as a string
-            if mask is not None:
-                # mask all elements which are masked (1)
-                if mask.T[idx_x, idx_y]:
-                    s = ""
-                else:
-                    s = str(np.round(matrix.T[idx_x, idx_y], round))
-            else:
-                s = str(np.round(matrix.T[idx_x, idx_y], round))
 
             # get the rgba value of the cmap at the matrix position
             rgb = scalar_map.to_rgba(matrix.T[idx_x,
@@ -155,6 +149,20 @@ def draw_numbers(
             # if the color is fixed manually, just set it
             if fix_color is not None:
                 c = fix_color
+            
+            # check if int or float:
+            if char_type == "int":
+                s = str(int(np.round(matrix.T[idx_x, idx_y], round_digits)))
+            elif char_type == "float":
+                s = str(np.round(matrix.T[idx_x, idx_y], round_digits))
+            else:
+                s = str(matrix.T[idx_x, idx_y])
+
+            # get the number to write as a string
+            if mask is not None:
+                # mask all elements which are 1 (True)
+                if mask.T[idx_x, idx_y]:
+                    s = ""
 
             # if n_characters is given, cut s to that amount of characters
             if n_characters is not None:
