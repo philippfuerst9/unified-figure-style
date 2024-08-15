@@ -61,10 +61,13 @@ def draw_numbers(
     yticks,
     cmap_name,
     round=3,
+    n_characters=None,
     fontsize=14,
     fix_color=None,
     norm="minmax",
-    mask=None
+    mask=None,
+    ha="center",
+    va="center",
 ):
     """
     Draw numbers on a pcolormesh plot.
@@ -83,6 +86,8 @@ def draw_numbers(
         Name of a named matplotlib colormap.mro
     round : int, optional
         Number of precision decimals to round to, by default 3
+    n_characters : int, optional
+        Explicitly limit the number of characters to write, by default None
     fontsize : int, optional
         Fontsize of the numbers, by default 14
     fix_color : str, optional
@@ -90,6 +95,10 @@ def draw_numbers(
     norm : str, optional
         either 'minmax' or 'twoslope': minmax to take min/max values of matrix,
         twoslope if the norm should be centered at 0.
+    ha : str, optional
+        Horizontal alignment of the text, by default 'center'
+    va : str, optional
+        Vertical alignment of the text, by default 'center'
     """
 
     # imports
@@ -139,18 +148,21 @@ def draw_numbers(
             y = scale_r * rgb[0] + scale_g * rgb[1] + scale_b * rgb[2]
 
             # set the color depending on brightness
-            if y > 186. / 255.:  # literature seems to be 186/255 as switch condition
+            if y > 156. / 255.:  # literature seems to be 186/255 as switch condition
                 c = "black"
             else:
                 c = "white"
-            
+            # if the color is fixed manually, just set it
             if fix_color is not None:
                 c = fix_color
 
-            # write the text
+            # if n_characters is given, cut s to that amount of characters
+            if n_characters is not None:
+                s = s[:n_characters]
 
+            # write the text
             ax.text(
-                xc, yc, s, fontsize=fontsize, ha='center', va='center', color=c
+                xc, yc, s, fontsize=fontsize, ha=ha, va=va, color=c
             )
 
 
