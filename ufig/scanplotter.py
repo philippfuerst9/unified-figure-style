@@ -288,6 +288,7 @@ class ScanPlotter():
         Parameters:
         - name (str): Name of the figure.
         - scans_to_plot (list): List of scan names to plot.
+        - params_to_plot (list, optional): List of parameters to plot. Defaults to None.
         - do_asimov (bool, optional): Plot asimov scans. Defaults to True.
         - do_pseudoexp (bool, optional): Plot pseudoexperiments. Defaults to True.
         - do_add_pars (bool, optional): Plot additional parameters. Defaults to False.
