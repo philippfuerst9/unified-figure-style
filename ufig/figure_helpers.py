@@ -69,6 +69,7 @@ def draw_numbers(
     mask=None,
     ha="center",
     va="center",
+    black_brightness=186,
 ):
     """
     Draw numbers on a pcolormesh plot.
@@ -102,6 +103,8 @@ def draw_numbers(
         Horizontal alignment of the text, by default 'center'
     va : str, optional
         Vertical alignment of the text, by default 'center'
+    black_brightness : int, optional
+        Brightness threshold for black text color, by default 186
     """
 
     # imports
@@ -142,7 +145,7 @@ def draw_numbers(
             y = scale_r * rgb[0] + scale_g * rgb[1] + scale_b * rgb[2]
 
             # set the color depending on brightness
-            if y > 156. / 255.:  # literature seems to be 186/255 as switch condition
+            if y > black_brightness / 255.:  # literature seems to be 186/255 as switch condition
                 c = "black"
             else:
                 c = "white"
