@@ -50,7 +50,8 @@ class ScanPlotter():
     @staticmethod
     def find_injection_points(fit_configuration_file):
         """
-        Find the injection points for a fit configuration.
+        Find the injection points for a fit configuration, or None if no
+        input params are given.
         Assumes all injected params are explicitly written down in the 
         analysis config part of the file (!)
 
@@ -62,7 +63,7 @@ class ScanPlotter():
         """
         with open(fit_configuration_file, "r", encoding="utf-8") as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
-        return config["analysis"]["input_params"]
+        return config["analysis"].get("input_params", None)
 
     def add_injection_points(self, scan_name, injection_points):
         """
@@ -162,6 +163,7 @@ class ScanPlotter():
         ax,
         plot_inject=False,
         ylabel=r"$-2\Delta \log \mathcal{L}$",
+        delta_y=0,
         remove_peaks=False,
         n_iter=2,
         default_ylims=True,
@@ -175,7 +177,8 @@ class ScanPlotter():
         - param (str): Parameter to plot.
         - ax (matplotlib.axis): Axis to plot into.
         - plot_inject (bool, optional): Plot injected parameters. Defaults to False.
-        - ylabel (str, optional): Label for the y-axis. Defaults to r"$-2\Delta \log \mathcal{L}$".
+        - ylabel (str, optional): Label for the y-axis. Defaults to r"$-2Delta log mathcal{L}$".
+        - delta_y (float, optional): Add a constant value to the y values. Defaults to 0.
         - remove_peaks (bool, optional): Remove peaks from the asimov scans. Defaults to False.
         - n_iter (int, optional): Number of iterations to remove peaks. Defaults to 2.
         - default_ylims (bool, optional): Use default y limits. Defaults to True.
@@ -187,6 +190,10 @@ class ScanPlotter():
             return
 
         x, y = asimov_hdl.get_scan_xy(param)
+
+        # if for some reason the freefit is not properly converged, it can be
+        # manually fixed here
+        y+=delta_y
 
         if remove_peaks:
             x, y = self.remove_peaks(x=x, y=y, n_iter=n_iter)
