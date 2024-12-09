@@ -56,22 +56,26 @@ class PlotFormatter():
         ax.set_ylabel(self.reco_labels[det_conf][dimension])
         return self.reco_labels[det_conf][dimension]
 
-    def apply_settings(self, ax, det_conf, dimension):
+    def apply_settings(self, ax, det_conf, dimension, legend=True):
 
         # always
         self.add_reco_xlabel(ax, det_conf, dimension)
         ax.set_yscale("log")
         ax.set_ylabel("Expected Events")
-        ax.legend()
         ax.set_xlim(
             min(self.binnings[det_conf][dimension]),
             max(self.binnings[det_conf][dimension])
         )
-        # energy
+
         if dimension == "energy":
             ax.set_ylim(1e-2, 1e7)
             ax.set_xscale("log")
-            if det_conf == "IC86_pass2_SnowStorm_v2_tracks":
-                ax.legend(
-                    bbox_to_anchor=(1.1, 1.0), facecolor="white", framealpha=1
-                )
+            
+        if legend:
+            ax.legend()
+            if dimension == "energy":
+                if det_conf == "IC86_pass2_SnowStorm_v2_tracks":
+                    ax.legend(
+                        bbox_to_anchor=(1.1, 1.0), facecolor="white", framealpha=1
+                    )
+            
