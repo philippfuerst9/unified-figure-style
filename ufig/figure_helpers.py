@@ -7,6 +7,12 @@ import numpy as np
 mpl.use('agg')
 
 
+def square(x):
+    """
+    Dummy function for testing.
+    """
+    return x**2
+
 def lighten_color(color, amount=0.5):
     """
     https://gist.github.com/ihincks
@@ -44,13 +50,13 @@ linestyles = {
     'loosely dashdotdotted': (0, (3, 10, 1, 10, 1, 10)),
     'densely dashdotdotted': (0, (3, 1, 1, 1, 1, 1)),
     'solid': 'solid',  # Same as (0, ()) or '-'
-    # 'dotted': 'dotted',  # Same as (0, (1, 1)) or ':'
-    # 'dashed': 'dashed',  # Same as '--'
-    # 'dashdot': 'dashdot',  # Same as '-.'
-    # '-': 'solid',  # Same as (0, ()) or '-'
-    # ':': 'dotted',  # Same as (0, (1, 1)) or ':'
-    # '--': 'dashed',  # Same as '--'
-    # '-.': 'dashdot'
+    'dotted': 'dotted',  # Same as (0, (1, 1)) or ':'
+    'dashed': 'dashed',  # Same as '--'
+    'dashdot': 'dashdot',  # Same as '-.'
+    '-': 'solid',  # Same as (0, ()) or '-'
+    ':': 'dotted',  # Same as (0, (1, 1)) or ':'
+    '--': 'dashed',  # Same as '--'
+    '-.': 'dashdot'
 }  # Same as '-.'
 
 
@@ -99,6 +105,8 @@ def draw_numbers(
     norm : str, optional
         either 'minmax' or 'twoslope': minmax to take min/max values of matrix,
         twoslope if the norm should be centered at 0.
+    mask: np.ndarray, optional
+        2D array of bools, where True values will not be written.
     ha : str, optional
         Horizontal alignment of the text, by default 'center'
     va : str, optional
@@ -153,19 +161,28 @@ def draw_numbers(
             if fix_color is not None:
                 c = fix_color
             
-            # check if int or float:
-            if char_type == "int":
-                s = str(int(np.round(matrix.T[idx_x, idx_y], round_digits)))
-            elif char_type == "float":
-                s = str(np.round(matrix.T[idx_x, idx_y], round_digits))
-            else:
-                s = str(matrix.T[idx_x, idx_y])
-
             # get the number to write as a string
             if mask is not None:
                 # mask all elements which are 1 (True)
                 if mask.T[idx_x, idx_y]:
                     s = ""
+                else:
+                    # check if int or float:
+                    if char_type == "int":
+                        s = str(int(np.round(matrix.T[idx_x, idx_y], round_digits)))
+                    elif char_type == "float":
+                        s = str(np.round(matrix.T[idx_x, idx_y], round_digits))
+                    else:
+                        s = str(matrix.T[idx_x, idx_y])
+            else:
+                # check if int or float:
+                if char_type == "int":
+                    s = str(int(np.round(matrix.T[idx_x, idx_y], round_digits)))
+                elif char_type == "float":
+                    s = str(np.round(matrix.T[idx_x, idx_y], round_digits))
+                else:
+                    s = str(matrix.T[idx_x, idx_y])
+
 
             # if n_characters is given, cut s to that amount of characters
             if n_characters is not None:
@@ -299,13 +316,6 @@ class FigureHandler():
         """Initialize the figure
         with the indicated number of subplots and size.
         """
-        fig, axs = plt.subplots(
-            figsize=[self.w, self.h],
-            nrows=self.nrows,
-            ncols=self.ncols,
-            **kwargs
-        )
-        self.fig = fig
 
         if self.ratio_bool:
             # axis handling with ratio plots
@@ -327,7 +337,7 @@ class FigureHandler():
                 height_ratios=height_ratios,
                 width_ratios=width_ratios
             )
-            gs1.update(wspace=0.26, hspace=0.05)
+            gs1.update(wspace=0.26, hspace=0.1)
 
             axes = []
             for i, gs in enumerate(gs1):
@@ -340,6 +350,7 @@ class FigureHandler():
                     #print(f"ax no i+1 = {i+1} not sharing x axis.")
                     ax = plt.subplot(gs)
                 axes.append(ax)
+                fig = plt.gcf()
 
             for i_row in range(self.nrows):
                 if i_row % 2 == 0:
@@ -354,6 +365,12 @@ class FigureHandler():
             print("first axes")
             print(axes[0])
         if not self.ratio_bool:
+            fig, axs = plt.subplots(
+                figsize=[self.w, self.h],
+                nrows=self.nrows,
+                ncols=self.ncols,
+                **kwargs
+            )
             # axis handling without ratio plots
             if self.nrows == 1 and self.ncols == 1:
                 axes = axs
