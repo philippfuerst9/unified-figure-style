@@ -156,8 +156,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - -0.1
-      - 0.2
+      - -0.15
+      - 0.15
   conv_norm:
         color: royalblue
         label: $\Phi_{\mathrm{Conventional}}$
@@ -166,8 +166,8 @@ Parameters:
         - 0
         - 10
         xlims:
-        - 1
-        - 1.6
+        - 0.6
+        - 1.3
   muon_norm:
       color: cornflowerblue
       label: Muon Template
@@ -206,8 +206,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 2.2
-      - 2.5
+      - 2.0
+      - 3.0
   gamma_1:
       color: darkviolet
       label: $\gamma_{\mathrm{1, isotropic}}$
@@ -396,8 +396,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 1.0
-      - 1.05
+      - 0.98
+      - 1.02
   ice_abs:
       color: forestgreen
       label: Ice Absorption
@@ -414,7 +414,7 @@ Parameters:
       linestyle: '-'
       ylims:
       - 0
-      - 10
+      - 1500
       xlims:
       - -0.5
       - 0.0
@@ -446,7 +446,7 @@ Parameters:
       - 0
       - 10
       xlims:
-      - -0.8
+      - 0.0
       - 1.25
   llh:
       color: black
