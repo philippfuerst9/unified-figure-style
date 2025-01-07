@@ -308,6 +308,16 @@ Parameters:
       xlims:
       - 0
       - 5
+  cringefits_norm:
+      color: xkcd:dusty red
+      label: $\Psi_{\mathrm{CRINGE}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 5 
   cringe_diffuse_norm:
       color: xkcd:dusty red
       label: $\Psi_{\mathrm{CRINGE, diffuse}}$
@@ -448,6 +458,176 @@ Parameters:
       xlims:
       - 0.0
       - 1.25
+  cscd_piece1:
+      color: grey
+      label: CSCD Piece 1
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece2:
+      color: grey
+      label: CSCD Piece 2
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece3:
+      color: grey
+      label: CSCD Piece 3
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece4:
+      color: grey
+      label: CSCD Piece 4
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece5:
+      color: grey
+      label: CSCD Piece 5
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece6:
+      color: grey
+      label: CSCD Piece 6
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece7:
+      color: grey
+      label: CSCD Piece 7
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece8:
+      color: grey
+      label: CSCD Piece 8
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece9:
+      color: grey
+      label: CSCD Piece 9
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece10:
+      color: grey
+      label: CSCD Piece 10
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece10:
+      color: grey
+      label: CSCD Piece 10
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece10:
+      color: grey
+      label: CSCD Piece 10
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece11:
+      color: grey
+      label: CSCD Piece 11
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece12:
+      color: grey
+      label: CSCD Piece 12
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece13:
+      color: grey
+      label: CSCD Piece 13
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece14:
+      color: grey
+      label: CSCD Piece 14
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
+  cscd_piece15:
+      color: grey
+      label: CSCD Piece 15
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0.0
+      - 3.0
   llh:
       color: black
       label: $-\log(\mathcal{L})$
