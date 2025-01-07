@@ -39,6 +39,14 @@ class ScanPlotter():
         """
         Initialize a Plotter from a dictionary.
 
+        Parameters:
+        - scan_hdl_dict (dict): Dictionary containing scan handlers:
+            [name][asimov_hdl] = asimov scan handler
+            [name][pseudoexp_hdl] = pseudoexp scan handler
+            [name][asimov_settings] = kwargs, e.g. [color...], passed to plt.plot()
+            [name][pseudoexp_settings] = kwargs, e.g. [color...], passed to ptl.stairs()
+            [name][injection_points] = dict of injected parameters, or None
+
         Returns:
         - cls: Plotter instance.
         """
