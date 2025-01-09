@@ -166,8 +166,10 @@ Parameters:
         - 0
         - 10
         xlims:
-        - 0.6
-        - 1.3
+        - 0.85
+        - 1.15
+        # - 0.6
+        # - 1.3
   muon_norm:
       color: cornflowerblue
       label: Muon Template
@@ -206,8 +208,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 2.0
-      - 3.0
+      - 1.8
+      - 2.8
   gamma_1:
       color: darkviolet
       label: $\gamma_{\mathrm{1, isotropic}}$
@@ -246,8 +248,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 1
-      - 2.8
+      - 0.5
+      - 3.0
   cutoff_astro:
       color: steelblue
       label: $\log_{10}(E_{\mathrm{cutoff}} / \mathrm{GeV})$
@@ -366,8 +368,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - -0.4
-      - 0.4
+      - -0.1
+      - 0.1
   barr_w:
       color: firebrick
       label: Barr $W$
@@ -376,8 +378,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - -1
-      - 1
+      - -0.5
+      - 0.5
   barr_y:
       color: firebrick
       label: Barr $Y$
@@ -386,8 +388,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - -0.8
-      - 0.8
+      - -0.2
+      - 0.2
   barr_z:
       color: firebrick
       label: Barr $Z$
@@ -396,8 +398,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - -0.4
-      - 0.4
+      - -0.3
+      - 0.2
   dom_eff:
       color: forestgreen
       label: Opt. Efficiency
@@ -416,8 +418,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 0.96
-      - 1.02
+      - 0.97
+      - 1.03
   ice_holep0:
       color: forestgreen
       label: Ice Hole $p_0$
@@ -427,7 +429,7 @@ Parameters:
       - 1500
       xlims:
       - -0.5
-      - 0.0
+      - 0.5
   ice_holep1:
       color: forestgreen
       label: Ice Hole $p_1$
@@ -436,8 +438,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - -0.1
-      - -0.03
+      - -0.07
+      - -0.01
   ice_scat:
       color: forestgreen
       label: Ice Scattering
@@ -446,7 +448,7 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 0.98
+      - 0.97
       - 1.03
   effective_veto:
       color: grey
