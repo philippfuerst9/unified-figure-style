@@ -121,7 +121,7 @@ class ScanPlotter():
         self.scan_names.append(name)
 
     def plot_pseudoexp_in_subplot(
-        self, scan_name, param, ax, plot_inject=False, **kwargs
+        self, scan_name, param, ax, plot_inject=False, nbins=10, **kwargs
     ):
         """
         Plot a pseudoexperiment.
@@ -147,7 +147,7 @@ class ScanPlotter():
         if pseudoexp_hdl is not None:
             if self.parameter_plot_config[param].get("xlims") is not None:
                 bin_edges = np.linspace(
-                    *self.parameter_plot_config[param]["xlims"], 10
+                    *self.parameter_plot_config[param]["xlims"], nbins
                 )
                 hist, bin_edges = pseudoexp_hdl.get_param_hist(
                     param, bins=bin_edges, density=True
@@ -169,7 +169,7 @@ class ScanPlotter():
         scan_name,
         param,
         ax,
-        plot_inject=False,
+        # plot_inject=False,
         ylabel=r"$-2\Delta \log \mathcal{L}$",
         delta_y=0,
         remove_peaks=False,
@@ -184,7 +184,7 @@ class ScanPlotter():
         - scan_name (str): Name of the scan.
         - param (str): Parameter to plot.
         - ax (matplotlib.axis): Axis to plot into.
-        - plot_inject (bool, optional): Plot injected parameters. Defaults to False.
+        # - plot_inject (bool, optional): Plot injected parameters. Defaults to False.
         - ylabel (str, optional): Label for the y-axis. Defaults to r"$-2Delta log mathcal{L}$".
         - delta_y (float, optional): Add a constant value to the y values. Defaults to 0.
         - remove_peaks (bool, optional): Remove peaks from the asimov scans. Defaults to False.
@@ -215,15 +215,34 @@ class ScanPlotter():
             ax.set_ylim(*self.parameter_plot_config[param]["ylims"])
         ax.set_ylabel(ylabel)
 
-        if plot_inject:
-            injection_points = self.scan_suite_dict[scan_name].get(
-                "injection_points", None
-            )
-            if injection_points is not None:
-                value = injection_points[
-                    param
-                ]  # this has to exist, otherwise config is probably wrong
-                ax.axvline(value, color="black", linestyle="-", zorder=10)
+        # if plot_inject:
+        #     injection_points = self.scan_suite_dict[scan_name].get(
+        #         "injection_points", None
+        #     )
+        #     if injection_points is not None:
+        #         value = injection_points[
+        #             param
+        #         ]  # this has to exist, otherwise config is probably wrong
+        #         ax.axvline(value, color="black", linestyle="-", zorder=10)
+
+    def plot_injected_par_in_subplot(self, scan_name, param, ax, **kwargs):
+        """
+        Plot injected parameters.
+
+        Returns:
+        - None
+        """
+        scan_suite = self.scan_suite_dict[scan_name]
+        injection_points = scan_suite.get("injection_points", None)
+        if injection_points is None:
+            return
+        ax.axvline(
+            injection_points[param],
+            color=scan_suite["asimov_settings"].get("color", "black"),
+            linestyle=scan_suite["asimov_settings"].get("linestyle", "-"),
+            **kwargs
+        )
+
 
     def plot_additional_pars_in_subplot(
         self, scan_name, param, ax, secondary_params=None, **kwargs
@@ -287,6 +306,7 @@ class ScanPlotter():
         params_to_plot=None,
         do_asimov=True,
         do_pseudoexp=True,
+        nbins=10,
         do_add_pars=False,
         plot_inject=False,
         nrows=None,
@@ -306,6 +326,7 @@ class ScanPlotter():
         - params_to_plot (list, optional): List of parameters to plot. Defaults to None.
         - do_asimov (bool, optional): Plot asimov scans. Defaults to True.
         - do_pseudoexp (bool, optional): Plot pseudoexperiments. Defaults to True.
+        - nbins (int, optional): Number of bins for the pseudoexp histograms. Defaults to 10.
         - do_add_pars (bool, optional): Plot additional parameters. Defaults to False.
         - plot_inject (bool, optional): Plot injected parameters. Defaults to False.
         - nrows (int, optional): Number of rows. Defaults to None.
@@ -356,19 +377,19 @@ class ScanPlotter():
         # determine matrix size
         nrows, ncols = self.find_closest_factors(len(fit_params))
 
-        # check that injected parameters are equal for all asimov scans:
-        if plot_inject:
-            injection_points = self.scan_suite_dict[scans_to_plot[0]].get(
-                "injection_points", None
-            )
-            if injection_points is not None:
-                for scan_name in scans_to_plot:
-                    if self.scan_suite_dict[scan_name].get(
-                        "injection_points", None
-                    ) != injection_points:
-                        raise ValueError(
-                            "Injected parameters are not equal for all scans."
-                        )
+        # # check that injected parameters are equal for all asimov scans:
+        # if plot_inject:
+        #     injection_points = self.scan_suite_dict[scans_to_plot[0]].get(
+        #         "injection_points", None
+        #     )
+        #     if injection_points is not None:
+        #         for scan_name in scans_to_plot:
+        #             if self.scan_suite_dict[scan_name].get(
+        #                 "injection_points", None
+        #             ) != injection_points:
+        #                 raise ValueError(
+        #                     "Injected parameters are not equal for all scans."
+        #                 )
 
         # create figure using FigureHandler:
         fig_hdl = FigureHandler(name, nrows=nrows, ncols=ncols, **kwargs)
@@ -393,13 +414,9 @@ class ScanPlotter():
                     ax2 = None
 
                 for scan_name in scans_to_plot:
-                    if do_asimov:
-                        # plot injected parameters only for the first scan:
-                        if plot_inject and scan_name == scans_to_plot[0]:
-                            plot_inject_c = True
-                        else:
-                            plot_inject_c = False
 
+                    # Plot asimov scan
+                    if do_asimov:
                         # check if the params was actually scanned:
                         if param in self.scan_suite_dict[scan_name][
                             "asimov_hdl"].get_scan_list():
@@ -407,16 +424,23 @@ class ScanPlotter():
                                 scan_name,
                                 param,
                                 ax,
-                                plot_inject=plot_inject_c,
                                 ylabel=None,
                                 remove_peaks=remove_peaks,
                                 n_iter=n_iter,
                                 default_ylims=default_ylims,
                             )
+
+                    # Plot pseudoexp histogram
                     if do_pseudoexp:
                         # pseudoexp can always be plotted
                         # as function of all fit parameters
-                        self.plot_pseudoexp_in_subplot(scan_name, param, ax2)
+                        self.plot_pseudoexp_in_subplot(scan_name, param, ax2, nbins = nbins)
+
+                    # Plot injected points (for each scan)
+                    if plot_inject:
+                        self.plot_injected_par_in_subplot(scan_name, param, ax)
+
+                    # Plot additional parameters
                     if do_add_pars:
                         self.plot_additional_pars_in_subplot(
                             scan_name, param, ax2
