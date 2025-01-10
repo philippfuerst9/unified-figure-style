@@ -33,9 +33,7 @@ class ScanPlotter():
                 self.parameter_plot_config = yaml.safe_load(f)["Parameters"]
 
     @classmethod
-    def from_dict(
-        cls, scan_hdl_dict, override_parameter_plot_config=None
-    ):
+    def from_dict(cls, scan_hdl_dict, override_parameter_plot_config=None):
         """
         Initialize a Plotter from a dictionary.
 
@@ -50,7 +48,9 @@ class ScanPlotter():
         Returns:
         - cls: Plotter instance.
         """
-        plotter = cls(override_parameter_plot_config=override_parameter_plot_config)
+        plotter = cls(
+            override_parameter_plot_config=override_parameter_plot_config
+        )
         plotter.scan_suite_dict = scan_hdl_dict
         plotter.scan_names = list(scan_hdl_dict.keys())
         return plotter
@@ -121,7 +121,7 @@ class ScanPlotter():
         self.scan_names.append(name)
 
     def plot_pseudoexp_in_subplot(
-        self, scan_name, param, ax, plot_inject=False, nbins=10, **kwargs
+        self, scan_name, param, ax, nbins=10, **kwargs
     ):
         """
         Plot a pseudoexperiment.
@@ -136,12 +136,6 @@ class ScanPlotter():
         """
         scan_suite = self.scan_suite_dict[scan_name]
         pseudoexp_hdl = scan_suite.get("pseudoexp_hdl")
-
-        # if plot inject, raise not implemented error:
-        if plot_inject:
-            raise NotImplementedError(
-                "Plotting of injected parameters for pseudoexp is not implemented yet."
-            )
 
         # do the Pseudoexp plot if pseudoexp hdl is not None:
         if pseudoexp_hdl is not None:
@@ -169,7 +163,6 @@ class ScanPlotter():
         scan_name,
         param,
         ax,
-        # plot_inject=False,
         ylabel=r"$-2\Delta \log \mathcal{L}$",
         delta_y=0,
         remove_peaks=False,
@@ -184,7 +177,6 @@ class ScanPlotter():
         - scan_name (str): Name of the scan.
         - param (str): Parameter to plot.
         - ax (matplotlib.axis): Axis to plot into.
-        # - plot_inject (bool, optional): Plot injected parameters. Defaults to False.
         - ylabel (str, optional): Label for the y-axis. Defaults to r"$-2Delta log mathcal{L}$".
         - delta_y (float, optional): Add a constant value to the y values. Defaults to 0.
         - remove_peaks (bool, optional): Remove peaks from the asimov scans. Defaults to False.
@@ -201,31 +193,23 @@ class ScanPlotter():
 
         # if for some reason the freefit is not properly converged, it can be
         # manually fixed here
-        y+=delta_y
+        y += delta_y
 
         if remove_peaks:
             x, y = self.remove_peaks(x=x, y=y, n_iter=n_iter)
         # add all asimov settings but override them with given kwargs:
         # make a deepcopy of the asimov settings:
-        actual_kwargs = self.scan_suite_dict[scan_name]["asimov_settings"
-                                                        ].copy()
+        actual_kwargs = self.scan_suite_dict[scan_name]["asimov_settings"].copy(
+        )
         actual_kwargs.update(kwargs)
         ax.plot(x, y, **actual_kwargs)
         if default_ylims:
             ax.set_ylim(*self.parameter_plot_config[param]["ylims"])
         ax.set_ylabel(ylabel)
 
-        # if plot_inject:
-        #     injection_points = self.scan_suite_dict[scan_name].get(
-        #         "injection_points", None
-        #     )
-        #     if injection_points is not None:
-        #         value = injection_points[
-        #             param
-        #         ]  # this has to exist, otherwise config is probably wrong
-        #         ax.axvline(value, color="black", linestyle="-", zorder=10)
-
-    def plot_injected_par_in_subplot(self, scan_name, param, ax, **kwargs):
+    def plot_injected_par_in_subplot(
+        self, scan_name, param, ax, override_injection_points=None, **kwargs
+    ):
         """
         Plot injected parameters.
 
@@ -234,15 +218,13 @@ class ScanPlotter():
         """
         scan_suite = self.scan_suite_dict[scan_name]
         injection_points = scan_suite.get("injection_points", None)
+        if override_injection_points is not None:
+            injection_points = override_injection_points
         if injection_points is None:
             return
         ax.axvline(
-            injection_points[param],
-            color=scan_suite["asimov_settings"].get("color", "black"),
-            linestyle=scan_suite["asimov_settings"].get("linestyle", "-"),
-            **kwargs
+            injection_points[param], color="black", linestyle="--", **kwargs
         )
-
 
     def plot_additional_pars_in_subplot(
         self, scan_name, param, ax, secondary_params=None, **kwargs
@@ -295,8 +277,8 @@ class ScanPlotter():
             # find peaks
             peaks = np.where((y[1:-1] > y[0:-2]) & (y[1:-1] > y[2:]))[0]
             # remove peaks
-            x = np.delete(x, peaks+1)
-            y = np.delete(y, peaks+1)
+            x = np.delete(x, peaks + 1)
+            y = np.delete(y, peaks + 1)
         return x, y
 
     def plot_scan_matrix(
@@ -377,20 +359,6 @@ class ScanPlotter():
         # determine matrix size
         nrows, ncols = self.find_closest_factors(len(fit_params))
 
-        # # check that injected parameters are equal for all asimov scans:
-        # if plot_inject:
-        #     injection_points = self.scan_suite_dict[scans_to_plot[0]].get(
-        #         "injection_points", None
-        #     )
-        #     if injection_points is not None:
-        #         for scan_name in scans_to_plot:
-        #             if self.scan_suite_dict[scan_name].get(
-        #                 "injection_points", None
-        #             ) != injection_points:
-        #                 raise ValueError(
-        #                     "Injected parameters are not equal for all scans."
-        #                 )
-
         # create figure using FigureHandler:
         fig_hdl = FigureHandler(name, nrows=nrows, ncols=ncols, **kwargs)
         axes = fig_hdl.axes
@@ -434,7 +402,9 @@ class ScanPlotter():
                     if do_pseudoexp:
                         # pseudoexp can always be plotted
                         # as function of all fit parameters
-                        self.plot_pseudoexp_in_subplot(scan_name, param, ax2, nbins = nbins)
+                        self.plot_pseudoexp_in_subplot(
+                            scan_name, param, ax2, nbins=nbins
+                        )
 
                     # Plot injected points (for each scan)
                     if plot_inject:
