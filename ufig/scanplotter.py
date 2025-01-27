@@ -281,6 +281,29 @@ class ScanPlotter():
             y = np.delete(y, peaks + 1)
         return x, y
 
+    def get_fitted_pars_list(self, scan_name):
+        # determine parameters to plot from the first scan in the list
+        tmp_scan = self.scan_suite_dict[scan_name].get(
+            "asimov_hdl", None
+        )
+        if tmp_scan is not None:
+            fitres = sorted(list(tmp_scan.get_freefit().keys()))
+            fit_params = [
+                p for p in fitres if p != 'llh' and p != 'fit_success'
+            ]
+
+        # if no asimov exists, look for parameters in pseudo-experiments:
+        elif tmp_scan is None:
+            tmp_scan = self.scan_suite_dict[scan_name].get(
+                "pseudoexp_hdl", None
+            )
+            if tmp_scan is not None:
+                fit_params = tmp_scan.get_param_names()
+            else:
+                raise ValueError("No scan found in scans_to_plot")
+        fit_params = sorted(fit_params)
+        return fit_params
+
     def plot_scan_matrix(
         self,
         name,
@@ -291,6 +314,7 @@ class ScanPlotter():
         nbins=10,
         do_add_pars=False,
         plot_inject=False,
+        override_injection_points=None,
         nrows=None,
         ncols=None,
         remove_peaks=False,
@@ -311,6 +335,7 @@ class ScanPlotter():
         - nbins (int, optional): Number of bins for the pseudoexp histograms. Defaults to 10.
         - do_add_pars (bool, optional): Plot additional parameters. Defaults to False.
         - plot_inject (bool, optional): Plot injected parameters. Defaults to False.
+        - override_injection_points: Override the injection points. Defaults to None.
         - nrows (int, optional): Number of rows. Defaults to None.
         - ncols (int, optional): Number of columns. Defaults to None.
         - remove_peaks (bool, optional): Remove peaks from the asimov scans. Defaults to False.
@@ -331,33 +356,29 @@ class ScanPlotter():
                 "do_pseudoexp and do_add_pars cannot be True at the same time."
             )
 
-        # determine parameters to plot from the first scan in the list
-        tmp_scan = self.scan_suite_dict[scans_to_plot[0]].get(
-            "asimov_hdl", None
-        )
-        if tmp_scan is not None:
-            fitres = sorted(list(tmp_scan.get_freefit().keys()))
-            fit_params = [
-                p for p in fitres if p != 'llh' and p != 'fit_success'
-            ]
+        # check what is to be plotted
+        # Case 1: asimov scan
+        if do_asimov and not do_pseudoexp:
+            case = "asimov_only"
+        # Case 2: pseudoexp scan
+        elif do_pseudoexp and not do_asimov:
+            case = "pseudoexp_only"
+        # Case 3: asimov and pseudoexp scan
+        elif do_pseudoexp and do_asimov:
+            case = "both"
+        elif do_asimov and do_add_pars:
+            case = "add_pars"
 
-        # if no asimov exists, look for parameters in pseudo-experiments:
-        elif tmp_scan is None:
-            tmp_scan = self.scan_suite_dict[scans_to_plot[0]].get(
-                "pseudoexp_hdl", None
-            )
-            if tmp_scan is not None:
-                fit_params = tmp_scan.get_param_names()
-            else:
-                raise ValueError("No scan found in scans_to_plot")
-        fit_params = sorted(fit_params)
+        # assume all scans scanned the same parameters, take the first scan
+        fit_params = self.get_fitted_pars_list(scans_to_plot[0])
 
         # if no params are given, just plot all fitted parameters
         if params_to_plot is None:
             params_to_plot = fit_params
 
+        print(params_to_plot)
         # determine matrix size
-        nrows, ncols = self.find_closest_factors(len(fit_params))
+        nrows, ncols = self.find_closest_factors(len(params_to_plot))
 
         # create figure using FigureHandler:
         fig_hdl = FigureHandler(name, nrows=nrows, ncols=ncols, **kwargs)
@@ -369,8 +390,12 @@ class ScanPlotter():
             if i < len(params_to_plot):
                 param = params_to_plot[i]
 
-                # create a second y-axis if do_pseudoexp or do_add_pars is True:
-                if do_pseudoexp or do_add_pars:
+                # case-dependent axis creation:
+                if case == "asimov_only":
+                    ax2 = None
+                elif case == "pseudoexp_only":
+                    ax2 = ax
+                elif case == "both" or case == "add_pars":
                     ax2 = ax.twinx()
                     ax2.set_zorder(
                         ax.get_zorder() - 1
@@ -378,8 +403,7 @@ class ScanPlotter():
                     ax.patch.set_visible(
                         False
                     )  # Make the background of ax transparent so ax2 is visible
-                else:
-                    ax2 = None
+
 
                 for scan_name in scans_to_plot:
 
@@ -408,7 +432,7 @@ class ScanPlotter():
 
                     # Plot injected points (for each scan)
                     if plot_inject:
-                        self.plot_injected_par_in_subplot(scan_name, param, ax)
+                        self.plot_injected_par_in_subplot(scan_name, param, ax, override_injection_points=override_injection_points)
 
                     # Plot additional parameters
                     if do_add_pars:
@@ -419,25 +443,31 @@ class ScanPlotter():
                 # always add parameter x-axis label:
                 ax.set_xlabel(self.parameter_plot_config[param]["label"])
 
-                # set ylabel (None if not left)
-                if i % ncols == 0:
+                # case-dependent ylabeling:
+                if case == "asimov_only" and i % ncols==0:
+                    # Asimov, ylabels on rightmost axes:
                     ax.set_ylabel(r"$-2\Delta \log \mathcal{L}$")
-
-                # set ylabel on ax2 only if do_pseudoexp and only on the rightmost column plots:
-                if do_pseudoexp and i % ncols == ncols - 1:
+                elif case == "pseudoexp_only" and i % ncols==0:
+                    # Pseudoexp, ylabels on rightmost axes:
                     ax2.set_ylabel("PDF")
-                # set ylabel on ax2 only if do_add_pars and only on the rightmost column plots:
-                if do_add_pars and i % ncols == ncols - 1:
-                    ax2.set_ylabel("Parameter Value")
-                # always set default xlimits:
+                elif case == "both":
+                    # Asimov left, Pseudoexp right:
+                    if i % ncols == 0:
+                        ax.set_ylabel(r"$-2\Delta \log \mathcal{L}$")
+                    if i % ncols == ncols - 1:
+                        ax2.set_ylabel("PDF")
+                elif case == "add_pars":
+                    # Asimov left, additional parameters right:
+                    if i % ncols == 0:
+                        ax.set_ylabel(r"$-2\Delta \log \mathcal{L}$")
+                    if i % ncols == ncols - 1:
+                        ax2.set_ylabel("Parameter Value")
+
                 if default_xlims:
                     ax.set_xlim(*self.parameter_plot_config[param]["xlims"])
 
                 h, l = ax.get_legend_handles_labels()
                 if ax2 is not None:
-                    # move asimov scans to front
-                    # ax.set_zorder(ax2.get_zorder()+1)
-
                     # collect all ax2 legend objects
                     h2, l2 = ax2.get_legend_handles_labels()
                     h.extend(h2)
