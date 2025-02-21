@@ -96,35 +96,40 @@ Fluxes:
     label: FM-SNR
     mathlabel: \mathrm{FM-SNR}
     linestyle: ':'
+  CRINGE_full:
+    color: xkcd:violet red
+    label: CRINGE-full
+    mathlabel: \mathrm{CRINGE-full}
+    linestyle: '-'
   SMW:
     color: xkcd:dusty red
-    label: CRINGE
-    mathlabel: \mathrm{CRINGE}
+    label: CRINGE-diffuse
+    mathlabel: \mathrm{CRINGE-diffuse}
     linestyle: '-'
-  CRINGE:
+  CRINGE_diffuse:
     color: xkcd:dusty red
-    label: CRINGE
-    mathlabel: \mathrm{CRINGE}
+    label: CRINGE-diffuse
+    mathlabel: \mathrm{CRINGE-diffuse}
     linestyle: '-'
-  Cringe:
+  Cringe_diffuse:
     color: xkcd:dusty red
-    label: CRINGE
-    mathlabel: \mathrm{CRINGE}
+    label: CRINGE-diffuse
+    mathlabel: \mathrm{CRINGE-diffuse}
     linestyle: '-'
-  cringe:
+  cringe_diffuse:
     color: xkcd:dusty red
-    label: CRINGE
-    mathlabel: \mathrm{CRINGE}
+    label: CRINGE-diffuse
+    mathlabel: \mathrm{CRINGE-diffuse}
     linestyle: '-'
-  Unresolved:
+  CRINGE_unresolved:
     color: [1.0, 0.5098039215686274, 0.2549019607843137]
-    label: Unresolved
-    mathlabel: \mathrm{Unresolved}
+    label: CRINGE-unresolved
+    mathlabel: \mathrm{CRINGE-unresolved}
     linestyle: ':'
-  unresolved:
+  CRINGE_unresolved:
     color: [1.0, 0.5098039215686274, 0.2549019607843137]
-    label: Unresolved
-    mathlabel: \mathrm{Unresolved}
+    label: CRINGE-unresolved
+    mathlabel: \mathrm{CRINGE-unresolved}
     linestyle: ':'
   Cygnus:
     color: xkcd:dark teal
@@ -172,7 +177,7 @@ Parameters:
         # - 1.3
   muon_norm:
       color: cornflowerblue
-      label: Muon Template
+      label: $\Phi_{\mu, \mathrm{Tracks}}$
       linestyle: ':'
       ylims:
       - 0
@@ -182,7 +187,7 @@ Parameters:
       - 2.5
   muongun_norm:
       color: cornflowerblue
-      label: MuonGun
+      label: $\Phi_{\mu, \mathrm{Cscd.}}$
       linestyle: '-.'
       ylims:
       - 0
@@ -216,10 +221,10 @@ Parameters:
       linestyle: '-.'
       ylims:
       - 0
-      - 10
+      - 5
       xlims:
       - 1
-      - 2.5
+      - 2.0
   gamma_2:
       color: darkviolet
       label: $\gamma_{\mathrm{2, isotropic}}$
@@ -302,7 +307,7 @@ Parameters:
       - 5
   cringe_norm:
       color: xkcd:dusty red
-      label: $\Psi_{\mathrm{CRINGE}}$
+      label: $\Psi_{\mathrm{CRINGE, diffuse}}$
       linestyle: '-'
       ylims:
       - 0
@@ -312,7 +317,7 @@ Parameters:
       - 5
   cringefits_norm:
       color: xkcd:dusty red
-      label: $\Psi_{\mathrm{CRINGE}}$
+      label: $\Psi_{\mathrm{CRINGE, diffuse}}$
       linestyle: '-'
       ylims:
       - 0
@@ -320,6 +325,16 @@ Parameters:
       xlims:
       - 0
       - 5 
+  cringefits_and_unresolved_norm:
+      color: xkcd:violet red
+      label: $\Psi_{\mathrm{CRINGE}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 5
   cringe_diffuse_norm:
       color: xkcd:dusty red
       label: $\Psi_{\mathrm{CRINGE, diffuse}}$
@@ -332,7 +347,7 @@ Parameters:
       - 5
   unresolved_norm:
       color: [1.0, 0.5098039215686274, 0.2549019607843137]
-      label: $\Psi_{\mathrm{unresolved}}$
+      label: $\Psi_{\mathrm{CRINGE, unresolved}}$
       linestyle: '-'
       ylims:
       - 0
