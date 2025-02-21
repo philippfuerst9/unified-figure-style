@@ -12,7 +12,9 @@ def rolling_window(a, window):
     return np.lib.stride_tricks.as_strided(a, shape=shape, strides=strides)
 
 
-def plot_hist_errorbar(ax, hist, bins, yerror, **kwargs):
+def plot_hist_errorbar(
+    ax, hist, bins, yerror, capsize=4.0, capthick=2, **kwargs
+):
     lines = ax.plot(
         bins, np.append(hist, hist[-1]), drawstyle="steps-post", **kwargs
     )
@@ -24,8 +26,8 @@ def plot_hist_errorbar(ax, hist, bins, yerror, **kwargs):
             hist,
             yerr=yerror,
             ls="none",
-            capsize=4.0,
-            capthick=2,
+            capsize=capsize,
+            capthick=capthick,
             color=lines[0].get_color(),
             alpha=lines[0].get_alpha()
         )
