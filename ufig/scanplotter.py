@@ -409,7 +409,7 @@ class ScanPlotter():
 
                     # Plot asimov scan
                     if do_asimov:
-                        # check if the params was actually scanned:
+                        # check if the params was actually scanned/configured:
                         if param in self.scan_suite_dict[scan_name][
                             "asimov_hdl"].get_scan_list():
                             self.plot_asimov_scan_in_subplot(
@@ -424,11 +424,14 @@ class ScanPlotter():
 
                     # Plot pseudoexp histogram
                     if do_pseudoexp:
-                        # pseudoexp can always be plotted
-                        # as function of all fit parameters
-                        self.plot_pseudoexp_in_subplot(
-                            scan_name, param, ax2, nbins=nbins
-                        )
+                        # pseudoexp can always be plotted if the param was 
+                        # configured:
+                        if param in self.scan_suite_dict[scan_name][
+                            "pseudoexp_hdl"].get_param_names():
+                            # as function of all fit parameters
+                            self.plot_pseudoexp_in_subplot(
+                                scan_name, param, ax2, nbins=nbins
+                            )
 
                     # Plot injected points (for each scan)
                     if plot_inject:
