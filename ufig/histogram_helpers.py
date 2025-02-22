@@ -15,6 +15,10 @@ def rolling_window(a, window):
 def plot_hist_errorbar(
     ax, hist, bins, yerror, capsize=4.0, capthick=2, **kwargs
 ):
+    # Remove keywords which are for errorbar from kwargs
+    kwargs.pop("capsize", None)
+    kwargs.pop("capthick", None)
+
     lines = ax.plot(
         bins, np.append(hist, hist[-1]), drawstyle="steps-post", **kwargs
     )
