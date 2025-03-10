@@ -260,7 +260,8 @@ class ScanPlotter():
                     **kwargs
                 )
 
-    def remove_peaks(self, x, y, n_iter=2):
+    @staticmethod
+    def remove_peaks(x, y, n_iter=2):
         """
         Remove x, y value pairs where the y values is greater than both adjacent points
 
