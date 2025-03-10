@@ -53,6 +53,11 @@ Fluxes:
     label: Fermi-$\pi^0$
     mathlabel: \mathrm{Fermi-}\pi^0
     linestyle: '-'
+  Fermi:
+    color: xkcd:dull orange
+    label: Fermi-$\pi^0$
+    mathlabel: \mathrm{Fermi-}\pi^0
+    linestyle: '-'
   galactic_fermi:
     color: xkcd:dull orange
     label: Fermi-$\pi^0$
@@ -77,6 +82,11 @@ Fluxes:
     label: AFO-r
     linestyle: '--'
   FM-const:
+    color: xkcd:purplish grey
+    label: FM-const.
+    mathlabel: \mathrm{FM-const.}
+    linestyle: '-.'
+  FM-Const:
     color: xkcd:purplish grey
     label: FM-const.
     mathlabel: \mathrm{FM-const.}
@@ -121,12 +131,22 @@ Fluxes:
     label: CRINGE-diffuse
     mathlabel: \mathrm{CRINGE-diffuse}
     linestyle: '-'
+  CringeFITS:
+    color: xkcd:dusty red
+    label: CRINGE-diffuse
+    mathlabel: \mathrm{CRINGE-diffuse}
+    linestyle: '-'
   CRINGE_unresolved:
     color: [1.0, 0.5098039215686274, 0.2549019607843137]
     label: CRINGE-unresolved
     mathlabel: \mathrm{CRINGE-unresolved}
     linestyle: ':'
   CRINGE_unresolved:
+    color: [1.0, 0.5098039215686274, 0.2549019607843137]
+    label: CRINGE-unresolved
+    mathlabel: \mathrm{CRINGE-unresolved}
+    linestyle: ':'
+  Unresolved:
     color: [1.0, 0.5098039215686274, 0.2549019607843137]
     label: CRINGE-unresolved
     mathlabel: \mathrm{CRINGE-unresolved}
@@ -151,7 +171,7 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 0
+      - -1
       - 2
   delta_gamma:
       color: '#ff7f0e'
@@ -193,8 +213,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 1.07
-      - 1.17
+      - 0.9
+      - 1.1
   prompt_norm:
       color: turquoise
       label: $\Phi_{\mathrm{Prompt}}$
@@ -204,7 +224,7 @@ Parameters:
       - 10
       xlims:
       - 0
-      - 4
+      - 6
   gamma_astro:
       color: darkviolet
       label: $\gamma_{\mathrm{isotropic}}$
@@ -213,7 +233,7 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 1.8
+      - 2.2
       - 2.8
   gamma_1:
       color: darkviolet
@@ -327,7 +347,7 @@ Parameters:
       - 5 
   cringefits_and_unresolved_norm:
       color: xkcd:violet red
-      label: $\Psi_{\mathrm{CRINGE}}$
+      label: $\Psi_{\mathrm{CRINGE, full}}$
       linestyle: '-'
       ylims:
       - 0
@@ -473,8 +493,8 @@ Parameters:
       - 0
       - 10
       xlims:
-      - 0.0
-      - 1.25
+      - -1.5
+      - 1.5
   cscd_piece1:
       color: grey
       label: CSCD Piece 1
