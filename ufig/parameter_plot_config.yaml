@@ -385,6 +385,56 @@ Parameters:
       xlims:
       - 0
       - 10
+  fermi_norm:
+      color: xkcd:dull orange
+      label: $\Psi_{\mathrm{Fermi-}\pi^0}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 5
+  kra_5_norm:
+      color: xkcd:deep sea blue
+      label: $\Psi_{\mathrm{KRA-}\gamma -5}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 3
+  kra_50_norm:
+      color: xkcd:carolina blue
+      label: $\Psi_{\mathrm{KRA-}\gamma -50}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 3
+  fm_const_norm:
+      color: xkcd:purplish grey
+      label: $\Psi_{\mathrm{FM-const.}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 5
+  fm_snr_norm:
+      color: darkgrey
+      label: $\Psi_{\mathrm{FM-SNR}}$
+      linestyle: '-'
+      ylims:
+      - 0
+      - 10
+      xlims:
+      - 0
+      - 5
   gamma_galactic:
       color: darkblue
       label: $\gamma_{\mathrm{galactic}}$
